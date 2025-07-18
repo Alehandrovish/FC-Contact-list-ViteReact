@@ -1,13 +1,14 @@
 import { Component } from "react";
+import "./ContactItem.css";
 
 class ContactItem extends Component {
   render() {
     return (
-      <div>
+      <div className="content-item">
         <p>
           {this.props.firstName} {this.props.lastName}
         </p>
-        <span>X</span>
+        <span className="btn-delete">X</span>
       </div>
     );
   }

@@ -1,0 +1,8 @@
+:root {
+  --borderForObjects: 3px solid black;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+}
