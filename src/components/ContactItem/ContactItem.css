@@ -7,6 +7,9 @@
   border: var(--borderForObjects);
   padding: 5px;
 }
+.focus {
+  background-color: crimson;
+}
 .btn-delete {
   border: var(--borderForObjects);
   cursor: pointer;

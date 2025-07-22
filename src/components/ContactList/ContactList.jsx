@@ -3,6 +3,10 @@ import ContactItem from "../ContactItem/ContactItem";
 import "./ContactList.css";
 
 class ContactList extends Component {
+  onAddMode = () => {
+    this.props.onAddMode(!this.props.isEditMode, "");
+  };
+
   render() {
     return (
       <section className="contacts-block">
@@ -11,15 +15,17 @@ class ContactList extends Component {
             return (
               <ContactItem
                 key={contact.id}
-                firstName={contact.firstName}
-                lastName={contact.lastName}
-                email={contact.email}
-                phone={contact.phone}
+                contact={contact}
+                onDelete={this.props.onDelete}
+                onEnterEditMode={this.props.onEditMode}
+                isEditMode={this.props.isEditMode}
+                idOfItem={this.props.idOfItem}
+                onAddMode={this.onAddMode}
               />
             );
           })}
         </section>
-        <button>New</button>
+        <button onClick={this.onAddMode}>New</button>
       </section>
     );
   }
