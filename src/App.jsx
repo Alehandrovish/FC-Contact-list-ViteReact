@@ -43,13 +43,7 @@ class App extends Component {
 
   handleEditMode = (contact) => {
     this.setState(() => {
-      const personData = {
-        id: contact.id,
-        firstName: contact.firstName,
-        lastName: contact.lastName,
-        email: contact.email,
-        phone: contact.phone,
-      };
+      const personData = { ...contact };
       const isEditMode = true;
       return {
         personData,
@@ -72,27 +66,24 @@ class App extends Component {
 
   handleAddMode = () => {
     this.setState({
+      personData: {
+        id: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        phone: "",
+      },
       isEditMode: false,
     });
   };
 
   componentDidMount() {
-    const contacts = JSON.parse(localStorage.getItem("Contacts"));
-    if (!contacts) {
-      this.setState({
-        contacts: [],
-      });
-    } else {
-      console.log(contacts);
-      this.setState({
-        contacts: contacts,
-      });
-    }
+    const contacts = JSON.parse(localStorage.getItem("Contacts")) || [];
+    this.setState({ contacts });
   }
   saveToLocalStorage = (contacts) => {
     localStorage.setItem("Contacts", JSON.stringify(contacts));
   };
-
   render() {
     return (
       <>
@@ -108,7 +99,6 @@ class App extends Component {
               onAddMode={this.handleAddMode}
             />
             <ContactForm
-              formData={this.state.personData}
               onAdd={this.addContact}
               personData={this.state.personData}
               isEditMode={this.state.isEditMode}

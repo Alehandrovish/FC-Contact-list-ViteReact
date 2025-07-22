@@ -26,10 +26,12 @@ class ContactForm extends Component {
   };
 
   clearAllInputs = () => {
-    [...document.getElementsByTagName("input")].forEach((input) => {
-      this.setState({
-        [input.id]: "",
-      });
+    this.setState({
+      id: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      phone: "",
     });
   };
 
@@ -52,7 +54,7 @@ class ContactForm extends Component {
   componentDidUpdate(prevProps) {
     if (
       this.props.isEditMode &&
-      this.props.personData !== prevProps.personData
+      prevProps.personData.id !== this.props.personData.id
     ) {
       const { id, firstName, lastName, email, phone } = this.props.personData;
       this.setState({
@@ -66,7 +68,6 @@ class ContactForm extends Component {
       this.clearAllInputs();
     }
   }
-  saveToLocalStorage = () => {};
 
   render() {
     return (

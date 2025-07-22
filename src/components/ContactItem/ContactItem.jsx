@@ -2,11 +2,7 @@ import { Component } from "react";
 import "./ContactItem.css";
 
 class ContactItem extends Component {
-  state = {
-    className: "content-item",
-  };
-
-  onContactdelete = (event) => {
+  onContactDelete = (event) => {
     event.stopPropagation();
     this.props.onDelete(this.props.contact.id);
   };
@@ -19,16 +15,15 @@ class ContactItem extends Component {
     const { id, firstName, lastName } = this.props.contact;
     return (
       <div
-        className={
-          "content-item" +
-          (this.props.isEditMode && id === this.props.idOfItem ? " focus" : "")
-        }
+        className={`content-item ${
+          this.props.isEditMode && id === this.props.idOfItem ? " focus" : ""
+        }`}
         onDoubleClick={this.onEdit}
       >
         <p>
-          "{firstName} {lastName}"
+          {firstName} {lastName}
         </p>
-        <span className="btn-delete" onClick={this.onContactdelete}>
+        <span className="btn-delete" onClick={this.onContactDelete}>
           X
         </span>
       </div>
