@@ -3,11 +3,7 @@ import "./ContactForm.css";
 
 class ContactForm extends Component {
   state = {
-    id: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
+    ...this.props.personData,
   };
 
   onInputChange = (event) => {
@@ -18,10 +14,9 @@ class ContactForm extends Component {
   };
 
   clearInput = (event) => {
-    const formItem = event.target.closest(".form-item");
-    const input = formItem.querySelector("input");
+    const inputSibling = event.target.parentNode.firstChild;
     this.setState({
-      [input.id]: "",
+      [inputSibling.id]: "",
     });
   };
 
@@ -51,30 +46,23 @@ class ContactForm extends Component {
     this.clearAllInputs();
   };
 
-  componentDidUpdate(prevProps) {
-    if (
-      this.props.isEditMode &&
-      prevProps.personData.id !== this.props.personData.id
-    ) {
-      const { id, firstName, lastName, email, phone } = this.props.personData;
-      this.setState({
-        id,
-        firstName,
-        lastName,
-        email,
-        phone,
-      });
-    } else if (prevProps.isEditMode !== this.props.isEditMode) {
-      this.clearAllInputs();
+  static getDerivedStateFromProps(props, state) {
+    const { id, firstName, lastName, email, phone } = props.personData;
+    if (state.id !== id) {
+      return {
+        id: id,
+        firstName: firstName,
+        lastName: lastName,
+        email: email,
+        phone: phone,
+      };
     }
   }
 
   render() {
     return (
       <form
-        onSubmit={
-          this.props.isEditMode ? this.onSaveChanges : this.onFormSubmit
-        }
+        onSubmit={this.props.idOfItem ? this.onSaveChanges : this.onFormSubmit}
       >
         <div className="input-block">
           <div className="form-item">
@@ -130,7 +118,7 @@ class ContactForm extends Component {
           <button type="submit">Save</button>
           <button
             type="button"
-            className={this.props.isEditMode ? "" : "hide"}
+            className={this.props.idOfItem ? "" : "hide"}
             onClick={this.onDeleteContact}
           >
             Delete

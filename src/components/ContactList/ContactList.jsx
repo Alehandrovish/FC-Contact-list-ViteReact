@@ -14,7 +14,6 @@ class ContactList extends Component {
                 contact={contact}
                 onDelete={this.props.onDelete}
                 onEnterEditMode={this.props.onEditMode}
-                isEditMode={this.props.isEditMode}
                 idOfItem={this.props.idOfItem}
               />
             );

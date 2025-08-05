@@ -15,9 +15,7 @@ class ContactItem extends Component {
     const { id, firstName, lastName } = this.props.contact;
     return (
       <div
-        className={`content-item ${
-          this.props.isEditMode && id === this.props.idOfItem ? " focus" : ""
-        }`}
+        className={`content-item ${id === this.props.idOfItem ? " focus" : ""}`}
         onDoubleClick={this.onEdit}
       >
         <p>

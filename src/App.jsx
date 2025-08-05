@@ -6,16 +6,19 @@ import "./reset.css";
 import "./App.css";
 
 class App extends Component {
+  CLEAR_PERSON_DATA = {
+    id: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+  };
+
   state = {
     contacts: [],
     personData: {
-      id: "",
-      firstName: "",
-      lastName: "",
-      email: "",
-      phone: "",
+      ...this.CLEAR_PERSON_DATA,
     },
-    isEditMode: false,
   };
 
   addContact = (contact) => {
@@ -31,23 +34,20 @@ class App extends Component {
 
   deleteContact = (id) => {
     this.setState((state) => {
-      const contacts = [
-        ...state.contacts.filter((contact) => contact.id !== id),
-      ];
+      const contacts = state.contacts.filter((contact) => contact.id !== id);
       this.saveToLocalStorage(contacts);
       return {
         contacts,
+        personData: { ...this.CLEAR_PERSON_DATA }, // очищаємо також форму
       };
     });
   };
 
   handleEditMode = (contact) => {
     this.setState(() => {
-      const personData = { ...contact };
-      const isEditMode = true;
+      const personData = contact;
       return {
         personData,
-        isEditMode,
       };
     });
   };
@@ -55,7 +55,7 @@ class App extends Component {
   onSaveChanges = (contact) => {
     this.setState((state) => {
       const contacts = state.contacts.map((cont) => {
-        return cont.id === contact.id ? { ...cont, ...contact } : { ...cont };
+        return cont.id === contact.id ? { ...cont, ...contact } : cont;
       });
       this.saveToLocalStorage(contacts);
       return {
@@ -73,7 +73,6 @@ class App extends Component {
         email: "",
         phone: "",
       },
-      isEditMode: false,
     });
   };
 
@@ -94,16 +93,15 @@ class App extends Component {
               contacts={this.state.contacts}
               onDelete={this.deleteContact}
               onEditMode={this.handleEditMode}
-              isEditMode={this.state.isEditMode}
               idOfItem={this.state.personData.id}
               onAddMode={this.handleAddMode}
             />
             <ContactForm
               onAdd={this.addContact}
               personData={this.state.personData}
-              isEditMode={this.state.isEditMode}
               onSaveChanges={this.onSaveChanges}
               onDelete={this.deleteContact}
+              idOfItem={this.state.personData.id}
             />
           </section>
         </article>
