@@ -38,7 +38,7 @@ class App extends Component {
       this.saveToLocalStorage(contacts);
       return {
         contacts,
-        personData: { ...this.CLEAR_PERSON_DATA }, // очищаємо також форму
+        personData: { ...this.CLEAR_PERSON_DATA },
       };
     });
   };
