@@ -16,20 +16,7 @@ class App extends Component {
 
   state = {
     contacts: [],
-    personData: {
-      ...this.CLEAR_PERSON_DATA,
-    },
-  };
-
-  addContact = (contact) => {
-    contact.id = nanoid();
-    this.setState((state) => {
-      const contacts = [...state.contacts, contact];
-      this.saveToLocalStorage(contacts);
-      return {
-        contacts,
-      };
-    });
+    personData: this.CLEAR_PERSON_DATA,
   };
 
   deleteContact = (id) => {
@@ -38,9 +25,34 @@ class App extends Component {
       this.saveToLocalStorage(contacts);
       return {
         contacts,
-        personData: { ...this.CLEAR_PERSON_DATA },
+        personData: this.CLEAR_PERSON_DATA,
       };
     });
+  };
+
+  formSubmitHandler = (contact) => {
+    if (this.state.personData.id) {
+      this.setState((state) => {
+        let newContacts = state.contacts;
+        const contactForEditId = state.contacts.findIndex(
+          (cont) => cont.id === contact.id
+        );
+        newContacts[contactForEditId] = contact;
+        this.saveToLocalStorage(newContacts);
+        return {
+          contacts: newContacts,
+        };
+      });
+    } else {
+      contact.id = nanoid();
+      this.setState((state) => {
+        const contacts = [...state.contacts, contact];
+        this.saveToLocalStorage(contacts);
+        return {
+          contacts,
+        };
+      });
+    }
   };
 
   handleEditMode = (contact) => {
@@ -48,18 +60,6 @@ class App extends Component {
       const personData = contact;
       return {
         personData,
-      };
-    });
-  };
-
-  onSaveChanges = (contact) => {
-    this.setState((state) => {
-      const contacts = state.contacts.map((cont) => {
-        return cont.id === contact.id ? { ...cont, ...contact } : cont;
-      });
-      this.saveToLocalStorage(contacts);
-      return {
-        contacts,
       };
     });
   };
@@ -97,11 +97,9 @@ class App extends Component {
               onAddMode={this.handleAddMode}
             />
             <ContactForm
-              onAdd={this.addContact}
               personData={this.state.personData}
-              onSaveChanges={this.onSaveChanges}
+              formSubmitHandler={this.formSubmitHandler}
               onDelete={this.deleteContact}
-              idOfItem={this.state.personData.id}
             />
           </section>
         </article>

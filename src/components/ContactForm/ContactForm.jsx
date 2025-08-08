@@ -32,13 +32,7 @@ class ContactForm extends Component {
 
   onFormSubmit = (event) => {
     event.preventDefault();
-    this.props.onAdd(this.state);
-    this.clearAllInputs();
-  };
-
-  onSaveChanges = (event) => {
-    event.preventDefault();
-    this.props.onSaveChanges(this.state);
+    this.props.formSubmitHandler(this.state);
   };
 
   onDeleteContact = () => {
@@ -57,13 +51,12 @@ class ContactForm extends Component {
         phone: phone,
       };
     }
+    return null;
   }
 
   render() {
     return (
-      <form
-        onSubmit={this.props.idOfItem ? this.onSaveChanges : this.onFormSubmit}
-      >
+      <form onSubmit={this.onFormSubmit}>
         <div className="input-block">
           <div className="form-item">
             <input
@@ -118,7 +111,7 @@ class ContactForm extends Component {
           <button type="submit">Save</button>
           <button
             type="button"
-            className={this.props.idOfItem ? "" : "hide"}
+            className={this.props.personData.id ? "" : "hide"}
             onClick={this.onDeleteContact}
           >
             Delete
